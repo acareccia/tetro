@@ -47,6 +47,8 @@ public class Block : MonoBehaviour
             transform.position += Vector3.down;
             if (!ValidMove()) {
                 transform.position -= Vector3.down;
+                this.enabled = false;
+                FindObjectOfType<Generator>().NewTetramino();
             }
             prevTime = Time.time;
         }
