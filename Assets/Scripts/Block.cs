@@ -5,7 +5,7 @@ using UnityEngine;
 public class Block : MonoBehaviour
 {
     public Vector3 rotationPoint;
-    public float fallTime = 0.8f;
+    public float fallTime = 1f;
     public static int height = 20;
     public static int width = 10;
 
@@ -32,9 +32,7 @@ public class Block : MonoBehaviour
             if (!ValidMove()) {
                 transform.position -= Vector3.right; //* Time.deltaTime;
             }
-        } 
-        
-        if (Input.GetKeyDown(KeyCode.UpArrow)) {
+        } else if (Input.GetKeyDown(KeyCode.UpArrow)) {
             //transform.Rotate(0,0,90);
             transform.RotateAround(transform.TransformPoint(rotationPoint), new Vector3(0,0,1),90);
             if (!ValidMove()) {
@@ -42,6 +40,8 @@ public class Block : MonoBehaviour
                 transform.RotateAround(transform.TransformPoint(rotationPoint), new Vector3(0,0,1),-90);
             }
         }
+
+        Debug.DrawLine(transform.TransformPoint(rotationPoint),Vector3.down,Color.white);
 
         if (Time.time - prevTime > GetFallTime()) {
             transform.position += Vector3.down;
