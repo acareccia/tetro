@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class Block : MonoBehaviour
 {
-    private float prevTime;
-
     public Vector3 rotationPoint;
-
-    public float fallTime = 0.9f;
+    public float fallTime = 0.8f;
     public static int height = 20;
     public static int width = 10;
+
+    private float prevTime;
+    private static Transform[,] grid = new Transform[width,height];
 
     // Start is called before the first frame update
     void Start()
@@ -47,6 +47,7 @@ public class Block : MonoBehaviour
             transform.position += Vector3.down;
             if (!ValidMove()) {
                 transform.position -= Vector3.down;
+                AddToGrid();
                 this.enabled = false;
                 FindObjectOfType<Generator>().NewTetramino();
             }
@@ -72,9 +73,24 @@ public class Block : MonoBehaviour
             if (roundedX < 0 || roundedX >= width || roundedY < 0 || roundedY >= height ) {
                 return false;
             }
+
+            if (grid[roundedX,roundedY] != null) {
+                return false;
+            }
         }
 
         return true;
+    }
+
+    void AddToGrid() {
+        foreach (Transform children in transform)
+        {
+            int roundedX = Mathf.RoundToInt(children.transform.position.x);
+            int roundedY = Mathf.RoundToInt(children.transform.position.y);
+
+            grid[roundedX,roundedY] = children;
+
+        }
     }
 
 

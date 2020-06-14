@@ -10,6 +10,7 @@ public class Generator : MonoBehaviour
     void Start()
     {
         NewTetramino();
+        
     }
 
     // Update is called once per frame
