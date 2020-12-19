@@ -15,8 +15,8 @@ public class Block : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
-        
+        Debug.Log("Start Block");
+    
     }
 
     // Update is called once per frame
@@ -48,6 +48,7 @@ public class Block : MonoBehaviour
             if (!ValidMove()) {
                 transform.position -= Vector3.down;
                 AddToGrid();
+                CheckLine();
                 this.enabled = false;
                 FindObjectOfType<Generator>().NewTetramino();
             }
@@ -93,6 +94,49 @@ public class Block : MonoBehaviour
         }
     }
 
+    void CheckLine() {
+        for (int i = height-1; i >= 0; i--)
+        {
+            if (HasLine(i)) {
+                DeleteLine(i);
+                RowDown(i);
+            }
+            
+        }
+    }
 
+    bool HasLine(int i) {
+        for (int j = 0; j < width; j++)
+        {
+            if (grid[j, i] == null) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    void DeleteLine(int i) {
+        Debug.Log("DeleleLine "+i);
+        for (int j = 0; j < width; j++)
+        {
+            Destroy(grid[j, i].gameObject);
+            grid[j, i] = null;
+        }
+    } 
+
+    void RowDown(int i) {
+        for (int y = i; y < height; y++)
+        {
+            for (int j = 0; j < width; j++)
+            {
+                if (grid[j, y] != null){
+
+                    grid[j, y - 1] = grid[j, y];
+                    grid[j, y] = null;
+                    grid[j, y - 1].transform.position -= Vector3.up;
+                }
+            }
+        }
+    }
  
 }
